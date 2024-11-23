@@ -1,0 +1,404 @@
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+}
+
+html {
+    margin: 0;
+    background: #1e1e1e; /* Latar belakang gelap */
+    padding: 30px;
+    height: 100%;
+}
+
+/* File Manager */
+.file-manager {
+    background: #2e2e2e; /* Latar belakang utama gelap */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 30px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5); /* Bayangan gelap */
+    padding: 0 15px;
+    border-radius: 8px; /* Sudut membulat */
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #333333; /* Latar belakang sidebar gelap */
+    padding: 20px;
+    border-right: 1px solid #444444;
+    position: fixed; /* Agar tetap di sisi kiri saat scrolling */
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto; /* Scroll jika konten melebihi tinggi layar */
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #e0e0e0; /* Warna teks terang */
+    text-decoration: none;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #444444; /* Warna latar saat hover */
+}
+
+.sidebar a i {
+    margin-right: 10px;
+    color: #e0e0e0;
+}
+
+/* File Manager Container */
+.file-manager {
+    margin-left: 240px; /* Memberikan ruang untuk sidebar */
+    padding: 20px;
+    background: #2e2e2e;
+    border-radius: 8px;
+}
+
+/* Header */
+.file-manager-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    background-color: #333333; /* Latar belakang header gelap */
+    border-bottom: 1px solid #444444;
+    border-radius: 8px 8px 0 0;
+}
+
+.file-manager-header h1 {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff; /* Warna teks putih */
+    margin: 0;
+}
+
+.file-manager-header a {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.file-manager-header a:hover {
+    background-color: #555555;
+}
+
+/* Form */
+.file-manager form {
+    display: flex;
+    flex-flow: column;
+    padding: 15px 0;
+}
+
+.file-manager form label {
+    padding: 10px 0;
+    color: #ffffff;
+}
+
+.file-manager form input,
+.file-manager form select,
+.file-manager form button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    background-color: #3a3a3a; /* Warna latar input gelap */
+    color: #ffffff; /* Warna teks putih */
+}
+
+.file-manager form button {
+    background-color: #4a79b4;
+    color: #ffffff;
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.file-manager form button:hover {
+    background-color: #4672a9;
+}
+
+/* Table */
+.file-manager-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.file-manager-table th,
+.file-manager-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444444;
+}
+
+.file-manager-table th {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.file-manager-table tbody tr {
+    background-color: #2e2e2e;
+    border-bottom: 1px solid #444444;
+}
+
+.file-manager-table tbody tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+
+.file-manager-table tbody tr.selected {
+    background-color: #3a3a3a;
+    border-bottom: 1px solid #555555;
+}
+
+.file-manager-table tbody tr td {
+    padding: 15px;
+    color: #e0e0e0;
+}
+
+.file-manager-table tbody tr td.name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.file-manager-table tbody tr td.name i {
+    width: 25px;
+    min-width: 25px;
+    margin-right: 10px;
+}
+
+.file-manager-table tbody tr td.name i.fa-folder {
+    color: #FBD200; /* Warna ikon folder */
+}
+
+.file-manager-table tbody tr td.name i.fa-file {
+    color: #b9bbbe; /* Warna ikon file */
+}
+
+.file-manager-table tbody tr td.name a {
+    text-decoration: none;
+    color: #e0e0e0;
+}
+
+.file-manager-table tbody tr td.name a:hover {
+    text-decoration: underline;
+}
+
+.file-manager-table tbody tr td.date {
+    font-size: 14px;
+    color: #aaaaaa;
+}
+
+
+
+.file-manager-table tbody tr td.actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: #4a79b4;
+    color: #ffffff;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    transition: background-color 0.3s;
+}
+
+.file-manager-table tbody tr td.actions .btn i {
+    font-size: 16px;
+}
+
+.file-manager-table tbody tr td.actions .btn:hover {
+    background: #4672a9;
+}
+
+.file-manager-table tbody tr td.actions .btn.green {
+    background: #4ab46d;
+}
+
+.file-manager-table tbody tr td.actions .btn.green:hover {
+    background: #46a966;
+}
+
+.file-manager-table tbody tr td.actions .btn.red {
+    background: #b44a4a;
+}
+
+.file-manager-table tbody tr td.actions .btn.red:hover {
+    background: #a94646;
+}
+
+.file-manager-table tbody tr td.actions .btn:last-child {
+    margin-right: 0;
+}
+
+/* Messages */
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.success {
+    color: #4ab46d;
+}
+
+.error {
+    color: #b44a4a;
+}
+
+/* Modal Gambar */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+.modal-content,
+#caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbbbbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+    transition: background-color 0.6s ease;
+    user-select: none;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#caption {
+    text-align: center;
+    color: #cccccc;
+    padding: 10px 0;
+    height: auto;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-wrap: break-word;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+    .file-manager {
+        margin-left: 0; /* Menghapus margin kiri untuk mobile */
+        padding: 20px 10px;
+    }
+
+    .sidebar {
+        display: none; /* Menyembunyikan sidebar pada layar kecil */
+    }
+
+    .file-manager-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .file-manager-header h1 {
+        margin-bottom: 10px;
+    }
+
+    .file-manager-table {
+        margin-top: 10px;
+    }
+
+    .file-manager-table th,
+    .file-manager-table td {
+        padding: 10px;
+    }
+
+    .file-manager-table tbody tr td.actions {
+        justify-content: flex-start;
+    }
+
+    .file-manager-table tbody tr td.actions .btn {
+        margin-right: 5px;
+    }
+}

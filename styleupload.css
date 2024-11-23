@@ -1,0 +1,288 @@
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
+    font-size: 16px;
+}
+
+html {
+    margin: 0;
+    background: #f8f9f9 linear-gradient(0deg, #f8f9f9 0%, #f8f9f9 83%, #4b82c5 83%, #4b82c5 100%) no-repeat;
+    padding: 30px;
+    height: 100%;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #4a5361;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    width: 100%; /* Full width for mobile */
+    max-width: 600px; /* Max width for larger screens */
+    margin: 0 auto;
+    margin-top: 30px;
+    border-radius: 20px; /* Rounded corners for iPhone style */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Softer shadow for iPhone style */
+}
+
+.file-manager form {
+    display: flex;
+    flex-flow: column;
+    padding: 20px; /* Increased padding for cleaner look */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.file-manager form label {
+    padding: 10px 0;
+}
+
+.file-manager form input, .file-manager form select, .file-manager form button {
+    width: 100%;
+    padding: 12px; /* Slightly larger padding for touch-friendly UI */
+    border: 1px solid #c4c7cf;
+    border-radius: 10px; /* Rounded corners for iPhone style */
+    margin-bottom: 10px; /* Add margin for better spacing */
+}
+
+.file-manager form button {
+    background-color: #007aff; /* iPhone style blue button */
+    color: #fff;
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.file-manager form button:hover {
+    background-color: #005bb5;
+}
+
+.file-manager-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.file-manager-header h1 {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 600;
+    color: #7f828a;
+}
+
+.file-manager-header a {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Rounded icon background */
+    background-color: #007aff;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.file-manager-header a:hover {
+    background-color: #005bb5;
+}
+
+@media (min-width: 768px) {
+    html, body {
+        padding: 30px; /* Increased padding for larger screens */
+    }
+    .file-manager {
+        width: 600px; /* Fixed width for desktop */
+    }
+    .file-manager form input, .file-manager form select, .file-manager form button {
+        max-width: none; /* Remove max width restriction for larger screens */
+    }
+    .file-manager-header a {
+        width: 34px; /* Keep the original icon size for desktop */
+        height: 34px;
+    }
+}
+
+.file-manager-table tbody tr {
+    background-color: #f7f9fa;
+    border-bottom: 1px solid #dbdde0;
+    border-radius: 10px; /* Rounded corners for rows */
+}
+
+.file-manager-table tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+.file-manager-table tbody tr.selected {
+    background-color: #dceeff;
+    border-bottom: 1px solid #b0cae2;
+}
+
+.file-manager-table tbody tr td {
+    padding: 15px;
+    color: #000;
+}
+
+.file-manager-table tbody tr td.name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.file-manager-table tbody tr td.name i {
+    width: 25px;
+    min-width: 25px;
+}
+
+.file-manager-table tbody tr td.name i.fa-folder {
+    color: #FBD200;
+}
+
+.file-manager-table tbody tr td.name i.fa-file {
+    color: #b9bbbe;
+}
+
+.file-manager-table tbody tr td.name a {
+    text-decoration: none;
+    color: #000;
+}
+
+.file-manager-table tbody tr td.name a:hover {
+    text-decoration: underline;
+}
+
+.file-manager-table tbody tr td.date {
+    font-size: 14px;
+    color: #53555a;
+}
+
+.file-manager-table tbody tr td.actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: #007aff; /* iPhone style blue button */
+    color: #FFFFFF;
+    padding: 11px 6px;
+    border-radius: 10px; /* Rounded corners for buttons */
+    margin-right: 2px;
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.file-manager-table tbody tr td.actions .btn:hover {
+    background: #005bb5;
+}
+
+.file-manager-table tbody tr td.actions .btn.green {
+    background: #34c759; /* iPhone style green button */
+}
+
+.file-manager-table tbody tr td.actions .btn.green:hover {
+    background: #32a751;
+}
+
+.file-manager-table tbody tr td.actions .btn.red {
+    background: #ff3b30; /* iPhone style red button */
+}
+
+.file-manager-table tbody tr td.actions .btn.red:hover {
+    background: #e3332b;
+}
+
+.file-manager-table tbody tr td.actions .btn:last-child {
+    margin-right: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+
+.upload-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 20px; /* Rounded corners for iPhone style */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Softer shadow for iPhone style */
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="file"] {
+    padding: 12px; /* Larger padding for touch-friendly UI */
+    border: 1px solid #ddd;
+    border-radius: 10px; /* Rounded corners for iPhone style */
+}
+
+input[type="submit"] {
+    background: #007aff; /* iPhone style blue button */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px; /* Rounded corners for iPhone style */
+    cursor: pointer;
+    transition: background 0.3s ease; /* Smooth transition for hover */
+}
+
+input[type="submit"]:hover {
+    background: #005bb5;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 10px; /* Rounded corners for iPhone style */
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.progress-bar {
+    width: 0;
+    height: 20px;
+    background-color: #007aff; /* iPhone style blue progress bar */
+    text-align: center;
+    color: white;
+    line-height: 20px;
+    transition: width 0.4s ease;
+}
+
+#loading {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#result {
+    text-align: center;
+    margin-top: 20px;
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
