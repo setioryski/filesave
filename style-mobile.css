@@ -51,7 +51,7 @@ body {
 /* Header Links and Buttons */
 .file-manager-header a,
 .file-manager-header button {
-    width: 34px;
+    width: 0px;
     height: 34px;
     display: inline-flex;
     align-items: center;
@@ -226,7 +226,7 @@ body {
 
     .file-manager-header a,
     .file-manager-header button {
-        width: 30px;
+        width: 50px;
         height: 30px;
     }
 
