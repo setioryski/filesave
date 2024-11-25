@@ -1,3 +1,12 @@
+body {
+    transform: scale(0.9); /* 90% zoom */
+    transform-origin: top left; /* Keep scaling aligned to the top-left corner */
+    width: 111.11%; /* Adjust width to compensate for scaling */
+    height: 111.11%; /* Adjust height to compensate for scaling */
+    overflow-x: hidden; /* Prevent horizontal scroll due to scaling */
+    margin: 0; /* Ensure no extra margins */
+    padding: 0;
+}
 /* Global Styles */
 * {
     box-sizing: border-box;
@@ -7,41 +16,41 @@
 
 html {
     margin: 0;
-    background: #1e1e1e; /* Latar belakang gelap */
+    background: #1e1e1e; /* Dark background */
     padding: 30px;
     height: 100%;
 }
 
 /* File Manager */
 .file-manager {
-    background: #2e2e2e; /* Latar belakang utama gelap */
+    background: #2e2e2e; /* Main dark background */
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     margin-top: 30px;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5); /* Bayangan gelap */
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5); /* Dark shadow */
     padding: 0 15px;
-    border-radius: 8px; /* Sudut membulat */
+    border-radius: 8px; /* Rounded corners */
 }
 
 /* Sidebar */
 .sidebar {
     width: 220px;
-    background-color: #333333; /* Latar belakang sidebar gelap */
+    background-color: #333333; /* Dark sidebar background */
     padding: 20px;
     border-right: 1px solid #444444;
-    position: fixed; /* Agar tetap di sisi kiri saat scrolling */
+    position: fixed; /* Fixed to the left side during scrolling */
     top: 0;
     left: 0;
     height: 100%;
-    overflow-y: auto; /* Scroll jika konten melebihi tinggi layar */
+    overflow-y: auto; /* Scroll if content exceeds screen height */
 }
 
 .sidebar a {
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    color: #e0e0e0; /* Warna teks terang */
+    color: #e0e0e0; /* Light text color */
     text-decoration: none;
     border-radius: 6px;
     margin-bottom: 10px;
@@ -49,7 +58,7 @@ html {
 }
 
 .sidebar a:hover {
-    background-color: #444444; /* Warna latar saat hover */
+    background-color: #444444; /* Background color on hover */
 }
 
 .sidebar a i {
@@ -59,7 +68,7 @@ html {
 
 /* File Manager Container */
 .file-manager {
-    margin-left: 240px; /* Memberikan ruang untuk sidebar */
+    margin-left: 240px; /* Space for sidebar */
     padding: 20px;
     background: #2e2e2e;
     border-radius: 8px;
@@ -71,7 +80,7 @@ html {
     align-items: center;
     justify-content: space-between;
     padding: 20px 0;
-    background-color: #333333; /* Latar belakang header gelap */
+    background-color: #333333; /* Dark header background */
     border-bottom: 1px solid #444444;
     border-radius: 8px 8px 0 0;
 }
@@ -80,12 +89,12 @@ html {
     flex: 1;
     font-size: 18px;
     font-weight: 600;
-    color: #ffffff; /* Warna teks putih */
+    color: #ffffff; /* White text color */
     margin: 0;
 }
 
 .file-manager-header a {
-    width: 34px;
+    width: 90px;
     height: 34px;
     display: inline-flex;
     align-items: center;
@@ -119,8 +128,8 @@ html {
     padding: 10px;
     border: 1px solid #555555;
     border-radius: 4px;
-    background-color: #3a3a3a; /* Warna latar input gelap */
-    color: #ffffff; /* Warna teks putih */
+    background-color: #3a3a3a; /* Dark input background */
+    color: #ffffff; /* White text color */
 }
 
 .file-manager form button {
@@ -150,17 +159,18 @@ html {
 .file-manager-table td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #444444;
+    /* border-bottom: 1px solid #444444; */ /* Dihapus */
 }
 
 .file-manager-table th {
     background-color: #333333;
     color: #ffffff;
+    /* border-bottom: 1px solid #444444; */ /* Dihapus */
 }
 
 .file-manager-table tbody tr {
     background-color: #2e2e2e;
-    border-bottom: 1px solid #444444;
+    /* border-bottom: 1px solid #444444; */ /* Dihapus */
 }
 
 .file-manager-table tbody tr:nth-child(even) {
@@ -169,12 +179,18 @@ html {
 
 .file-manager-table tbody tr.selected {
     background-color: #3a3a3a;
-    border-bottom: 1px solid #555555;
+    /* border-bottom: 1px solid #555555; */ /* Dihapus */
 }
 
 .file-manager-table tbody tr td {
     padding: 15px;
     color: #e0e0e0;
+    /* border-bottom: 1px solid #444444; */ /* Dihapus */
+}
+
+/* Tambahkan garis pembatas hanya pada baris dengan kelas 'file' */
+.file-manager-table tbody tr.file td {
+    border-bottom: 1px solid #444444;
 }
 
 .file-manager-table tbody tr td.name {
@@ -192,11 +208,11 @@ html {
 }
 
 .file-manager-table tbody tr td.name i.fa-folder {
-    color: #FBD200; /* Warna ikon folder */
+    color: #FBD200; /* Folder icon color */
 }
 
 .file-manager-table tbody tr td.name i.fa-file {
-    color: #b9bbbe; /* Warna ikon file */
+    color: #b9bbbe; /* File icon color */
 }
 
 .file-manager-table tbody tr td.name a {
@@ -212,8 +228,6 @@ html {
     font-size: 14px;
     color: #aaaaaa;
 }
-
-
 
 .file-manager-table tbody tr td.actions .btn {
     display: inline-flex;
@@ -275,41 +289,52 @@ html {
     color: #b44a4a;
 }
 
-/* Modal Gambar */
+/* Modal Styles */
 .modal {
-    display: none;
+    display: none; /* Ensure modal is hidden by default */
     position: fixed;
     z-index: 1000;
-    padding-top: 60px;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.9);
+    /* Flexbox properties are applied dynamically via JavaScript */
 }
 
 .modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-}
-
-.modal-content,
-#caption {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
     animation-name: zoom;
     animation-duration: 0.6s;
+    display: flex;
+    flex-direction: column; /* Arrange media and caption vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
 }
 
-@keyframes zoom {
-    from {
-        transform: scale(0)
-    }
+.modal-content img,
+.modal-content video,
+.modal-content audio {
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
+    margin: auto;
+}
 
-    to {
-        transform: scale(1)
-    }
+#caption {
+    text-align: center;
+    color: #cccccc;
+    padding: 10px 0;
+    height: auto;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-wrap: break-word;
+    margin-top: 10px; /* Space between media and caption */
+    font-size: 18px;
 }
 
 .close {
@@ -320,6 +345,7 @@ html {
     font-size: 40px;
     font-weight: bold;
     transition: color 0.3s;
+    z-index: 1001; /* Ensure it's above the media content */
 }
 
 .close:hover,
@@ -354,26 +380,25 @@ html {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-#caption {
-    text-align: center;
-    color: #cccccc;
-    padding: 10px 0;
-    height: auto;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-    word-wrap: break-word;
+@keyframes zoom {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
 }
 
-/* Responsif untuk layar kecil */
+/* Responsive for Small Screens */
 @media (max-width: 768px) {
     .file-manager {
-        margin-left: 0; /* Menghapus margin kiri untuk mobile */
+        margin-left: 0; /* Remove left margin for mobile */
         padding: 20px 10px;
     }
 
     .sidebar {
-        display: none; /* Menyembunyikan sidebar pada layar kecil */
+        display: none; /* Hide sidebar on small screens */
     }
 
     .file-manager-header {

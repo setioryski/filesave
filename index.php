@@ -2,45 +2,45 @@
 // Start output buffering
 ob_start();
 
-// Error reporting (untuk debugging)
+// Error reporting (for debugging)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Path direktori awal
+// Initial directory path
 $initial_directory = 'uploads/';
 
-// Menentukan path direktori saat ini
+// Determine the current directory path
 $current_directory = isset($_GET['dir']) ? rtrim($_GET['dir'], '/') . '/' : $initial_directory;
 
-// Inklusi autentikasi jika diperlukan
+// Include authentication if necessary
 include 'authenticate.php';
 
-// Fungsi untuk mengamankan path dan mencegah traversal
+// Function to secure the path and prevent traversal
 function secure_path($path, $initial_directory) {
-    // Jika path tidak dimulai dengan initial_directory, tambahkan
+    // If path does not start with initial_directory, prepend it
     if (strpos($path, $initial_directory) !== 0) {
         $path = $initial_directory . ltrim($path, '/');
     }
-    // Realpath untuk mendapatkan path absolut
+    // Realpath to get the absolute path
     $real_initial = realpath($initial_directory);
     $real_path = realpath($path);
     if ($real_path === false || strpos($real_path, $real_initial) !== 0) {
         return $real_initial . DIRECTORY_SEPARATOR;
     }
-    // Tambahkan DIRECTORY_SEPARATOR jika tidak ada
+    // Add DIRECTORY_SEPARATOR if missing
     if (is_dir($real_path) && substr($real_path, -1) !== DIRECTORY_SEPARATOR) {
         $real_path .= DIRECTORY_SEPARATOR;
     }
     return $real_path;
 }
 
-// Menangani permintaan file untuk ditampilkan atau diunduh
+// Handle file download requests
 if (isset($_GET['file']) && isset($_GET['download'])) {
     $file_path = secure_path($_GET['file'], $initial_directory);
-    // Download file jika valid
+    // Download file if valid
     if (!is_dir($file_path) && strpos($file_path, realpath($initial_directory)) === 0 && file_exists($file_path)) {
-        // Headers untuk download
+        // Headers for download
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
@@ -48,28 +48,28 @@ if (isset($_GET['file']) && isset($_GET['download'])) {
         readfile($file_path);
         exit;
     } else {
-        // Redirect kembali jika file tidak valid
+        // Redirect back if file is invalid
         header("Location: index.php?dir=" . urlencode($current_directory));
         exit;
     }
 }
 
-// Menggunakan glob untuk mendapatkan daftar file dan direktori
+// Use glob to get list of files and directories
 $results = glob($current_directory . '*');
 
-// Debugging: Menampilkan direktori saat ini dan hasil glob()
+// Debugging: Display current directory and glob() results
 echo "<!-- Current Directory: " . htmlspecialchars($current_directory, ENT_QUOTES) . " -->";
 echo "<!-- glob() Result: " . print_r($results, true) . " -->";
 
-// Jika `glob()` gagal atau tidak menemukan file, tetapkan `$results` sebagai array kosong
+// If glob() fails or finds no files, set $results as empty array
 if ($results === false || empty($results)) {
     $results = [];
 }
 
-// Menentukan apakah direktori ditampilkan terlebih dahulu
+// Determine whether directories are listed first
 $directory_first = true;
 
-// Sortir file jika diperlukan
+// Sort files if necessary
 if ($directory_first) {
     usort($results, function ($a, $b) {
         $a_is_dir = is_dir($a);
@@ -84,7 +84,7 @@ if ($directory_first) {
     });
 }
 
-// Fungsi untuk menentukan ikon jenis file
+// Function to determine file type icon
 function get_filetype_icon($filetype)
 {
     if (is_dir($filetype)) {
@@ -106,16 +106,17 @@ function get_filetype_icon($filetype)
 <html lang="id">
 
 <head>
-    <!-- Meta tags dan judul -->
+    <!-- Meta tags and title -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>File Sharing</title>
 
-    <!-- Link ke file CSS eksternal -->
+    <!-- Link to external CSS files -->
     <link href="style.css" rel="stylesheet" type="text/css">
+    <!-- You can remove the following line if not using separate mobile styles -->
     <link href="style-mobile.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 600px)">
 
-    <!-- Font Awesome CDN untuk ikon -->
+    <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
@@ -129,27 +130,23 @@ function get_filetype_icon($filetype)
         <a href="#"><i class="fa-solid fa-folder"></i> Dokumen</a>
         <a href="#"><i class="fa-solid fa-download"></i> Unduhan</a>
         <a href="#"><i class="fa-solid fa-image"></i> Gambar</a>
-        <!-- Tambahkan link sidebar lainnya jika diperlukan -->
+        <!-- Add more sidebar links if needed -->
     </div>
 
     <!-- File Manager -->
     <div class="file-manager">
 
-        <!-- Header -->
-        <div class="file-manager-header">
-            <!-- Form Upload -->
-            <div class="upload-form">
-                <form method="post" action="upload.php" enctype="multipart/form-data">
-                    <input type="hidden" name="directory" value="<?= htmlspecialchars($current_directory, ENT_QUOTES) ?>">
-                    <input type="file" name="file" required>
-                    <button type="submit" name="submit_upload"><i class="fa-solid fa-upload"></i> Upload</button>
-                </form>
-            </div>
-            <!-- Tombol Emoji atau Aksi Lainnya -->
-            <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
-        </div>
+<!-- Header -->
+<div class="file-manager-header">
+    <!-- Upload Button -->
+    <a href="upload.php" class="btn upload-btn"><i class="fa-solid fa-upload"></i> Upload</a>
+    
+    <!-- Emoji or Other Action Buttons -->
+    <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
+</div>
 
-        <!-- Tabel File -->
+
+        <!-- File Table -->
         <table class="file-manager-table">
             <thead>
                 <tr>
@@ -177,40 +174,43 @@ function get_filetype_icon($filetype)
                         $is_video = preg_match('/^video\//', $mime_type);
                         ?>
                 <tr class="file">
-                    <td class="name">
-                        <?= get_filetype_icon($result) ?>
-                        <?php if ($is_dir): ?>
-                            <a class="view-directory" href="?dir=<?= urlencode($result) ?>">
-                                <?= basename($result) ?>
-                            </a>
-                        <?php else: ?>
-                            <a class="view-file"
-                                href="#"
-                                data-file="<?= htmlspecialchars($result, ENT_QUOTES) ?>"
-                                data-type="<?= $is_image ? 'image' : ($is_audio ? 'audio' : ($is_video ? 'video' : 'other')) ?>">
-                                <?= basename($result) ?>
-                            </a>
-                        <?php endif; ?>
-                    </td>
+<td class="name">
+    <div class="file-item">
+        <?= get_filetype_icon($result) ?>
+        <?php if ($is_dir): ?>
+            <a class="view-directory" href="?dir=<?= urlencode($result) ?>">
+                <?= basename($result) ?>
+            </a>
+        <?php else: ?>
+            <a class="view-file"
+                href="#"
+                data-file="<?= htmlspecialchars($result, ENT_QUOTES) ?>"
+                data-type="<?= $is_image ? 'image' : ($is_audio ? 'audio' : ($is_video ? 'video' : 'other')) ?>">
+                <?= basename($result) ?>
+            </a>
+        <?php endif; ?>
+    </div>
+</td>
+
                     <td class="actions">
                         <?php if (!$is_dir): ?>
-                        <!-- Tombol Download -->
+                        <!-- Download Button -->
                         <a href="?dir=<?= urlencode($current_directory) ?>&file=<?= urlencode($result) ?>&download=true"
                             class="btn green" title="Unduh">
                             <i class="fa-solid fa-download fa-xs"></i>
                         </a>
-                        <!-- Tombol Edit (Rename) -->
+                        <!-- Edit (Rename) Button -->
                         <a href="rename.php?file=<?= urlencode($result) ?>" class="btn blue" title="Ubah Nama">
                             <i class="fa-solid fa-pen-to-square fa-xs"></i>
                         </a>
-                        <!-- Tombol Delete -->
+                        <!-- Delete Button -->
                         <a href="delete.php?file=<?= urlencode($result) ?>&dir=<?= urlencode($current_directory) ?>"
                             class="btn red" title="Hapus"
                             onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?');">
                             <i class="fa-solid fa-trash fa-xs"></i>
                         </a>
                         <?php else: ?>
-                        <!-- Placeholder untuk direktori tanpa aksi -->
+                        <!-- Placeholder for directories without actions -->
                         <span class="no-actions"></span>
                         <?php endif; ?>
                     </td>
@@ -226,32 +226,30 @@ function get_filetype_icon($filetype)
 
     </div>
 
-    <!-- Modal Media -->
+    <!-- Media Modal -->
     <div id="media-modal" class="modal">
         <span class="close" onclick="closeMediaModal()">&times;</span>
-        <div class="modal-content-container" id="modal-content-container">
-            <!-- Konten media akan dimasukkan di sini oleh JavaScript -->
+        <div class="modal-content">
+            <!-- Media content will be inserted here by JavaScript -->
         </div>
         <div id="caption" class="caption"></div>
     </div>
 
     <!-- JavaScript -->
     <script>
-        // Fungsi untuk membuka modal media
+        // Function to open media modal
         function openMediaModal(type, src, alt) {
             var modal = document.getElementById('media-modal');
-            var container = document.getElementById('modal-content-container');
+            var container = document.querySelector('.modal-content');
             var captionText = document.getElementById('caption');
 
-            // Bersihkan konten sebelumnya
+            // Clear previous content
             container.innerHTML = '';
 
             if (type === 'image') {
                 var img = document.createElement('img');
                 img.src = src;
                 img.alt = alt;
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '80vh';
                 container.appendChild(img);
             } else if (type === 'audio') {
                 var audio = document.createElement('audio');
@@ -266,74 +264,78 @@ function get_filetype_icon($filetype)
                 var video = document.createElement('video');
                 video.controls = true;
                 video.autoplay = true;
-                video.style.maxWidth = '100%';
-                video.style.maxHeight = '80vh';
                 var source = document.createElement('source');
                 source.src = src;
                 source.type = 'video/mp4';
                 video.appendChild(source);
                 container.appendChild(video);
             } else {
-                // Untuk jenis file lain, tidak menampilkan modal
+                // For other file types, do not display modal
                 return;
             }
 
             captionText.innerHTML = alt;
-            modal.style.display = "block";
+            modal.style.display = "flex"; // Use flex to align properly
         }
 
-        // Fungsi untuk menutup modal media
+        // Function to close media modal
         function closeMediaModal() {
             var modal = document.getElementById('media-modal');
-            var container = document.getElementById('modal-content-container');
+            var container = document.querySelector('.modal-content');
             var captionText = document.getElementById('caption');
 
-            // Hentikan audio/video jika ada
+            // Stop any playing media
             var mediaElements = container.querySelectorAll('audio, video');
             mediaElements.forEach(function(media) {
                 media.pause();
                 media.currentTime = 0;
             });
 
-            // Bersihkan konten
+            // Clear content
             container.innerHTML = '';
             captionText.innerHTML = '';
 
             modal.style.display = "none";
         }
 
-        // Menambahkan event listener pada link file setelah DOM siap
+        // Add event listeners to file links after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             var fileLinks = document.querySelectorAll('.view-file');
             fileLinks.forEach(function(link) {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault(); // Mencegah aksi default link
+                    e.preventDefault(); // Prevent default link action
                     var fileSrc = link.getAttribute('data-file');
                     var fileType = link.getAttribute('data-type');
                     var altText = link.textContent;
 
-                    // Sesuaikan path relatif sesuai dengan direktori web
-                    // Asumsikan 'uploads/' adalah direktori root untuk file
+                    // Adjust relative path as needed
                     var relativePath = fileSrc.startsWith('/') ? fileSrc : fileSrc;
 
-                    // Tentukan jenis media
+                    // Determine media type
                     if (fileType === 'image' || fileType === 'audio' || fileType === 'video') {
                         openMediaModal(fileType, relativePath, altText);
                     } else {
-                        // Untuk jenis file lain, misalnya, tidak melakukan apapun atau bisa membuka file
+                        // For other file types, perform default action
                         window.location.href = fileSrc;
                     }
                 });
             });
         });
 
-        // Menutup modal saat klik di luar konten modal
+        // Close modal when clicking outside the content
         window.onclick = function(event) {
             var modal = document.getElementById('media-modal');
             if (event.target == modal) {
                 closeMediaModal();
             }
         }
+
+        // Optional: Close modal on Esc key press for better accessibility
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeMediaModal();
+            }
+        });
     </script>
 </body>
 
