@@ -1,9 +1,10 @@
-/* style-mobile.css */
+/* style-mobile.css - Dark Mode with Unified Header Background */
 
 /* Global Styles */
 * {
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, 
+                 Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
     font-size: 16px;
     margin: 0;
     padding: 0;
@@ -11,53 +12,66 @@
 
 body {
     margin: 0;
-    background: #f8f9f9;
+    background: #1e1e1e; /* Dark background */
     padding: 10px;
     height: 100%;
     overflow-x: hidden; /* Prevent horizontal scrolling */
+    color: #e0e0e0; /* Light text color for readability */
 }
 
+/* File Manager */
 .file-manager {
-    background: #fff;
+    background: #2e2e2e; /* Dark container background */
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
     margin-top: 30px;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.7); /* Darker shadow for depth */
     border-radius: 8px;
     overflow: hidden;
 }
 
+/* File Manager Header */
 .file-manager-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #ddd;
+    background-color: #1f1f1f; /* Dark header background */
+    border-bottom: 1px solid #333333; /* Darker border */
 }
 
+/* Breadcrumbs (if any) */
 .file-manager-header.breadcrump {
     font-size: 14px;
-    color: #7f828a;
+    color: #a0a0a0; /* Lighter grey for breadcrumbs */
     font-weight: 500;
 }
 
-.file-manager-header a {
+/* Header Links and Buttons */
+.file-manager-header a,
+.file-manager-header button {
     width: 34px;
     height: 34px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    color: #fff;
+    color: #ffffff; /* White icon color */
     text-decoration: none;
+    background-color: #1f1f1f; /* Unified background matching header */
+    transition: background-color 0.3s;
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor on hover */
 }
 
-.file-manager-header a:hover {
-    background-color: #2e76cf;
+/* Hover Effects for Header Links and Buttons */
+.file-manager-header a:hover,
+.file-manager-header button:hover {
+    background-color: #2a2a2a; /* Slightly lighter shade on hover for visibility */
 }
 
+/* File Manager Table */
 .file-manager-table {
     width: 100%;
     border-collapse: collapse;
@@ -67,39 +81,39 @@ body {
 .file-manager-table th, .file-manager-table td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #333333; /* Dark border */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .file-manager-table th {
-    background-color: #f4f4f4;
+    background-color: #1f1f1f; /* Dark header background */
     font-weight: 600;
-    color: #7f828a;
+    color: #ffffff; /* White text for headers */
 }
 
 .file-manager-table tbody tr {
-    background-color: #fff;
+    background-color: #2e2e2e; /* Dark row background */
 }
 
 .file-manager-table tbody tr:nth-child(even) {
-    background-color: #f7f9fa;
+    background-color: #2a2a2a; /* Slightly lighter for alternate rows */
 }
 
 .file-manager-table tbody tr.selected {
-    background-color: #dceeff;
-    border-bottom: 1px solid #b0cae2;
+    background-color: #3a3a3a; /* Highlighted row color */
+    border-bottom: 1px solid #555555; /* Dark border for selected row */
 }
 
 .file-manager-table tbody tr.file {
-    background-color: #fff;
+    background-color: #2e2e2e; /* Ensure file rows have dark background */
     width: 370px; /* Set fixed width for tr.file */
 }
 
 .file-manager-table tbody tr td {
     padding: 15px;
-    color: #000;
+    color: #e0e0e0; /* Light text color */
     display: flex;
     align-items: center;
 }
@@ -113,19 +127,16 @@ body {
 
 .file-manager-table tbody tr td.name i {
     margin-right: 10px;
-}
-
-.file-manager-table tbody tr td.name i.fa-folder {
-    color: #FBD200;
+    color: #FBD200; /* Folder icon color remains vibrant */
 }
 
 .file-manager-table tbody tr td.name i.fa-file {
-    color: #b9bbbe;
+    color: #b9bbbe; /* File icon color */
 }
 
 .file-manager-table tbody tr td.name a {
     text-decoration: none;
-    color: #000;
+    color: #e0e0e0; /* Light text color */
     flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -148,13 +159,14 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    background: #4a79b4;
-    color: #FFFFFF;
+    background: #4a79b4; /* Button background color */
+    color: #FFFFFF; /* White icon color */
     padding: 10px;
     border-radius: 4px;
     cursor: pointer;
     width: 30px;
     height: 30px;
+    transition: background-color 0.3s;
 }
 
 .file-manager-table tbody tr td.actions .btn i {
@@ -162,23 +174,23 @@ body {
 }
 
 .file-manager-table tbody tr td.actions .btn:hover {
-    background: #4672a9;
+    background: #4672a9; /* Darker shade on hover */
 }
 
 .file-manager-table tbody tr td.actions .btn.green {
-    background: #4ab46d;
+    background: #4ab46d; /* Green buttons */
 }
 
 .file-manager-table tbody tr td.actions .btn.green:hover {
-    background: #46a966;
+    background: #46a966; /* Darker green on hover */
 }
 
 .file-manager-table tbody tr td.actions .btn.red {
-    background: #b44a4a;
+    background: #b44a4a; /* Red buttons */
 }
 
 .file-manager-table tbody tr td.actions .btn.red:hover {
-    background: #a94646;
+    background: #a94646; /* Darker red on hover */
 }
 
 /* Hide size and modified columns */
@@ -196,19 +208,24 @@ body {
     .file-manager {
         width: 100%;
         margin-top: 10px;
+        background: #2e2e2e; /* Dark background for file manager on mobile */
     }
 
     .file-manager-header {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row; /* Ensure horizontal alignment */
+        align-items: center; /* Center vertically */
+        justify-content: space-between; /* Space between items */
+        gap: 10px; /* Space between header items */
     }
 
     .file-manager-header .breadcrump {
         font-size: 16px;
-        margin-bottom: 10px;
+        margin-bottom: 0; /* Remove bottom margin since items are side by side */
+        color: #a0a0a0; /* Lighter color for breadcrumbs */
     }
 
-    .file-manager-header a {
+    .file-manager-header a,
+    .file-manager-header button {
         width: 30px;
         height: 30px;
     }
@@ -227,7 +244,7 @@ body {
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #333333; /* Dark border */
     }
 
     .file-manager-table tbody tr td {
@@ -244,16 +261,21 @@ body {
     }
 }
 
+/* Message Styles */
 .message {
     margin-top: 20px;
     padding: 10px;
     border-radius: 4px;
+    background-color: #3a3a3a; /* Dark background for messages */
+    color: #e0e0e0; /* Light text color */
 }
 
-.success {
-    color: green;
+.message.success {
+    background-color: #4ab46d; /* Green background for success messages */
+    color: #ffffff; /* White text */
 }
 
-.error {
-    color: red;
+.message.error {
+    background-color: #b44a4a; /* Red background for error messages */
+    color: #ffffff; /* White text */
 }

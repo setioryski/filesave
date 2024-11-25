@@ -103,7 +103,6 @@ function get_filetype_icon($filetype)
 }
 ?>
 <!DOCTYPE html>
-<<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -125,105 +124,107 @@ function get_filetype_icon($filetype)
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="#"><i class="fa-solid fa-house"></i> Beranda</a>
-        <a href="#"><i class="fa-solid fa-folder"></i> Dokumen</a>
-        <a href="#"><i class="fa-solid fa-download"></i> Unduhan</a>
-        <a href="#"><i class="fa-solid fa-image"></i> Gambar</a>
-        <!-- Tambahkan tautan sidebar lainnya jika perlu -->
-    </div>
-
-    <!-- File Manager -->
-    <div class="file-manager">
-
-        <!-- Header -->
-        <div class="file-manager-header">
-            <!-- Tombol Upload -->
-            <a href="upload.php" class="btn upload-btn"><i class="fa-solid fa-upload"></i> Upload</a>
-            
-            <!-- Tombol Emoji atau Aksi Lainnya -->
-            <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="#"><i class="fa-solid fa-house"></i> Beranda</a>
+            <a href="#"><i class="fa-solid fa-folder"></i> Dokumen</a>
+            <a href="#"><i class="fa-solid fa-download"></i> Unduhan</a>
+            <a href="#"><i class="fa-solid fa-image"></i> Gambar</a>
+            <!-- Tambahkan tautan sidebar lainnya jika perlu -->
         </div>
-    
-        <!-- Tabel File -->
-        <table class="file-manager-table">
-            <thead>
-                <tr>
-                    <th class="name-column">Nama <i class="fa-solid fa-arrow-down-long fa-xs"></i></th>
-                    <th class="actions-column">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($current_directory != $initial_directory): ?>
-                <tr>
-                    <td class="name">
-                        <i class="fa-solid fa-folder"></i>
-                        <a href="?dir=<?= urlencode(dirname(rtrim($current_directory, '/'))) ?>">..</a>
-                    </td>
-                    <td class="actions"></td>
-                </tr>
-                <?php endif; ?>
-                <?php
-                if (!empty($results)) {
-                    foreach ($results as $result):
-                        $is_dir = is_dir($result);
-                        $mime_type = mime_content_type($result);
-                        $is_image = preg_match('/^image\//', $mime_type);
-                        $is_audio = preg_match('/^audio\//', $mime_type);
-                        $is_video = preg_match('/^video\//', $mime_type);
-                        ?>
-                <tr class="file">
-                    <td class="name">
-                        <div class="file-item">
-                            <?= get_filetype_icon($result) ?>
-                            <?php if ($is_dir): ?>
-                                <a class="view-directory" href="?dir=<?= urlencode($result) ?>">
-                                    <?= basename($result) ?>
-                                </a>
-                            <?php else: ?>
-                                <a class="view-file"
-                                    href="#"
-                                    data-file="<?= htmlspecialchars($result, ENT_QUOTES) ?>"
-                                    data-type="<?= $is_image ? 'image' : ($is_audio ? 'audio' : ($is_video ? 'video' : 'other')) ?>">
-                                    <?= basename($result) ?>
-                                </a>
-                            <?php endif; ?>
-                        </div>
-                    </td>
-                    
-                    <td class="actions">
-                        <?php if (!$is_dir): ?>
-                        <!-- Tombol Download -->
-                        <a href="?dir=<?= urlencode($current_directory) ?>&file=<?= urlencode($result) ?>&download=true"
-                            class="btn green" title="Unduh">
-                            <i class="fa-solid fa-download fa-xs"></i>
-                        </a>
-                        <!-- Tombol Edit (Rename) -->
-                        <a href="rename.php?file=<?= urlencode($result) ?>" class="btn blue" title="Ubah Nama">
-                            <i class="fa-solid fa-pen-to-square fa-xs"></i>
-                        </a>
-                        <!-- Tombol Hapus -->
-                        <a href="delete.php?file=<?= urlencode($result) ?>&dir=<?= urlencode($current_directory) ?>"
-                            class="btn red" title="Hapus"
-                            onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?');">
-                            <i class="fa-solid fa-trash fa-xs"></i>
-                        </a>
-                        <?php else: ?>
-                        <!-- Placeholder untuk direktori tanpa aksi -->
-                        <span class="no-actions"></span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <?php
-                    endforeach;
-                } else {
-                    echo "<tr><td colspan='2'>Tidak ada file atau direktori.</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
 
+        <!-- File Manager -->
+        <div class="file-manager">
+
+            <!-- Header -->
+            <div class="file-manager-header">
+                <!-- Tombol Upload -->
+                <a href="upload.php" class="btn upload-btn"><i class="fa-solid fa-upload"></i> Upload</a>
+                
+                <!-- Tombol Emoji atau Aksi Lainnya -->
+                <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
+            </div>
+        
+            <!-- Tabel File -->
+            <table class="file-manager-table">
+                <thead>
+                    <tr>
+                        <th class="name-column">Nama <i class="fa-solid fa-arrow-down-long fa-xs"></i></th>
+                        <th class="actions-column">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($current_directory != $initial_directory): ?>
+                    <tr>
+                        <td class="name">
+                            <i class="fa-solid fa-folder"></i>
+                            <a href="?dir=<?= urlencode(dirname(rtrim($current_directory, '/'))) ?>">..</a>
+                        </td>
+                        <td class="actions"></td>
+                    </tr>
+                    <?php endif; ?>
+                    <?php
+                    if (!empty($results)) {
+                        foreach ($results as $result):
+                            $is_dir = is_dir($result);
+                            $mime_type = mime_content_type($result);
+                            $is_image = preg_match('/^image\//', $mime_type);
+                            $is_audio = preg_match('/^audio\//', $mime_type);
+                            $is_video = preg_match('/^video\//', $mime_type);
+                            ?>
+                    <tr class="file">
+                        <td class="name">
+                            <div class="file-item">
+                                <?= get_filetype_icon($result) ?>
+                                <?php if ($is_dir): ?>
+                                    <a class="view-directory" href="?dir=<?= urlencode($result) ?>">
+                                        <?= basename($result) ?>
+                                    </a>
+                                <?php else: ?>
+                                    <a class="view-file"
+                                        href="#"
+                                        data-file="<?= htmlspecialchars($result, ENT_QUOTES) ?>"
+                                        data-type="<?= $is_image ? 'image' : ($is_audio ? 'audio' : ($is_video ? 'video' : 'other')) ?>">
+                                        <?= basename($result) ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </td>
+                        
+                        <td class="actions">
+                            <?php if (!$is_dir): ?>
+                            <!-- Tombol Download -->
+                            <a href="?dir=<?= urlencode($current_directory) ?>&file=<?= urlencode($result) ?>&download=true"
+                                class="btn green" title="Unduh">
+                                <i class="fa-solid fa-download fa-xs"></i>
+                            </a>
+                            <!-- Tombol Edit (Rename) -->
+                            <a href="rename.php?file=<?= urlencode($result) ?>" class="btn blue" title="Ubah Nama">
+                                <i class="fa-solid fa-pen-to-square fa-xs"></i>
+                            </a>
+                            <!-- Tombol Hapus -->
+                            <a href="delete.php?file=<?= urlencode($result) ?>&dir=<?= urlencode($current_directory) ?>"
+                                class="btn red" title="Hapus"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?');">
+                                <i class="fa-solid fa-trash fa-xs"></i>
+                            </a>
+                            <?php else: ?>
+                            <!-- Placeholder untuk direktori tanpa aksi -->
+                            <span class="no-actions"></span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php
+                        endforeach;
+                    } else {
+                        echo "<tr><td colspan='2'>Tidak ada file atau direktori.</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+
+        </div>
     </div>
 
     <!-- Media Modal -->
