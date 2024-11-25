@@ -291,7 +291,7 @@ html {
 
 /* Modal Styles */
 .modal {
-    display: none; /* Ensure modal is hidden by default */
+    display: none; /* Pastikan modal tersembunyi secara default */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -300,7 +300,11 @@ html {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.9);
-    /* Flexbox properties are applied dynamically via JavaScript */
+    
+    /* Properti Flexbox untuk menengahkan konten */
+    display: flex;
+    justify-content: center; /* Menengahkan secara horizontal */
+    align-items: center; /* Menengahkan secara vertikal */
 }
 
 .modal-content {
@@ -310,16 +314,16 @@ html {
     animation-name: zoom;
     animation-duration: 0.6s;
     display: flex;
-    flex-direction: column; /* Arrange media and caption vertically */
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
+    flex-direction: column; /* Mengatur media dan caption secara vertikal */
+    align-items: center; /* Menengahkan secara horizontal */
+    justify-content: center; /* Menengahkan secara vertikal */
 }
 
 .modal-content img,
 .modal-content video,
 .modal-content audio {
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 80vh; /* Membatasi tinggi maksimal */
     display: block;
     margin: auto;
 }
@@ -333,7 +337,7 @@ html {
     overflow: visible;
     text-overflow: clip;
     word-wrap: break-word;
-    margin-top: 10px; /* Space between media and caption */
+    margin-top: 10px; /* Jarak antara media dan caption */
     font-size: 18px;
 }
 
@@ -345,7 +349,7 @@ html {
     font-size: 40px;
     font-weight: bold;
     transition: color 0.3s;
-    z-index: 1001; /* Ensure it's above the media content */
+    z-index: 1001; /* Pastikan berada di atas konten media */
 }
 
 .close:hover,
@@ -389,6 +393,7 @@ html {
         transform: scale(1)
     }
 }
+
 
 /* Responsive for Small Screens */
 @media (max-width: 768px) {
