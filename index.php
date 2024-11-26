@@ -14,7 +14,7 @@ $initial_directory = 'uploads/';
 $current_directory = isset($_GET['dir']) ? rtrim($_GET['dir'], '/') . '/' : $initial_directory;
 
 // Include authentication if necessary
-include 'authenticate.php';
+include 'folder_private.php';
 
 // Function to secure the path and prevent traversal
 function secure_path($path, $initial_directory) {
@@ -139,12 +139,17 @@ function get_filetype_icon($filetype)
 
             <!-- Header -->
             <div class="file-manager-header">
-                <!-- Tombol Upload -->
-                <a href="upload.php" class="btn upload-btn"><i class="fa-solid fa-upload"></i> Upload</a>
-                
-                <!-- Tombol Emoji atau Aksi Lainnya -->
-                <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
-            </div>
+    <!-- Tombol Upload -->
+    <a href="upload.php" class="btn upload-btn"><i class="fa-solid fa-upload"></i> Upload</a>
+
+    <!-- Tombol Create New Folder -->
+    <a href="folder_create.php?dir=<?= urlencode($current_directory) ?>" class="btn blue">
+        <i class="fa-solid fa-folder-plus"></i>
+    </a>
+
+    <!-- Tombol Emoji atau Aksi Lainnya -->
+    <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
+</div>
         
             <!-- Tabel File -->
             <table class="file-manager-table">
