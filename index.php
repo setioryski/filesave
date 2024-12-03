@@ -1,39 +1,11 @@
 <?php
-// Start output buffering
-ob_start();
+// index.php
 
-// Error reporting (for debugging)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Include the common configuration and functions
+include 'config.php';
 
-// Initial directory path
-$initial_directory = 'uploads/';
-
-// Determine the current directory path
-$current_directory = isset($_GET['dir']) ? rtrim($_GET['dir'], '/') . '/' : $initial_directory;
-
-// Include authentication if necessary
-include 'folder_private.php';
-
-// Function to secure the path and prevent traversal
-function secure_path($path, $initial_directory) {
-    // If path does not start with initial_directory, prepend it
-    if (strpos($path, $initial_directory) !== 0) {
-        $path = $initial_directory . ltrim($path, '/');
-    }
-    // Realpath to get the absolute path
-    $real_initial = realpath($initial_directory);
-    $real_path = realpath($path);
-    if ($real_path === false || strpos($real_path, $real_initial) !== 0) {
-        return $real_initial . DIRECTORY_SEPARATOR;
-    }
-    // Add DIRECTORY_SEPARATOR if missing
-    if (is_dir($real_path) && substr($real_path, -1) !== DIRECTORY_SEPARATOR) {
-        $real_path .= DIRECTORY_SEPARATOR;
-    }
-    return $real_path;
-}
+// Get the current directory
+$current_directory = get_current_directory($initial_directory);
 
 // Handle file download requests
 if (isset($_GET['file']) && isset($_GET['download'])) {
@@ -58,8 +30,8 @@ if (isset($_GET['file']) && isset($_GET['download'])) {
 $results = glob($current_directory . '*');
 
 // Debugging: Display current directory and glob() results
-echo "<!-- Current Directory: " . htmlspecialchars($current_directory, ENT_QUOTES) . " -->";
-echo "<!-- glob() Result: " . print_r($results, true) . " -->";
+// echo "<!-- Current Directory: " . htmlspecialchars($current_directory, ENT_QUOTES) . " -->";
+// echo "<!-- glob() Result: " . print_r($results, true) . " -->";
 
 // If glob() fails or finds no files, set $results as empty array
 if ($results === false || empty($results)) {
@@ -82,24 +54,6 @@ if ($directory_first) {
             return 1;
         }
     });
-}
-
-// Function to determine file type icon
-function get_filetype_icon($filetype)
-{
-    if (is_dir($filetype)) {
-        return '<i class="fa-solid fa-folder"></i>';
-    } else {
-        $mime = mime_content_type($filetype);
-        if (preg_match('/^image\//', $mime)) {
-            return '<i class="fa-solid fa-file-image"></i>';
-        } elseif (preg_match('/^video\//', $mime)) {
-            return '<i class="fa-solid fa-file-video"></i>';
-        } elseif (preg_match('/^audio\//', $mime)) {
-            return '<i class="fa-solid fa-file-audio"></i>';
-        }
-        return '<i class="fa-solid fa-file"></i>';
-    }
 }
 ?>
 <!DOCTYPE html>
@@ -127,7 +81,7 @@ function get_filetype_icon($filetype)
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <a href="#"><i class="fa-solid fa-house"></i> Beranda</a>
+            <a href="index.php"><i class="fa-solid fa-house"></i> Beranda</a>
             <a href="#"><i class="fa-solid fa-folder"></i> Dokumen</a>
             <a href="#"><i class="fa-solid fa-download"></i> Unduhan</a>
             <a href="#"><i class="fa-solid fa-image"></i> Gambar</a>
@@ -139,17 +93,17 @@ function get_filetype_icon($filetype)
 
             <!-- Header -->
             <div class="file-manager-header">
-    <!-- Tombol Upload -->
-    <a href="upload.php" class="btn upload-btn"><i class="fa-solid fa-upload"></i> Upload</a>
+                <!-- Tombol Upload -->
+                <a href="upload.php?dir=<?= urlencode($current_directory) ?>" class="btn upload-btn"><i class="fa-solid fa-upload"></i> Upload</a>
 
-    <!-- Tombol Create New Folder -->
-    <a href="folder_create.php?dir=<?= urlencode($current_directory) ?>" class="btn blue">
-        <i class="fa-solid fa-folder-plus"></i>
-    </a>
+                <!-- Tombol Create New Folder -->
+                <a href="folder_create.php?dir=<?= urlencode($current_directory) ?>" class="btn blue">
+                    <i class="fa-solid fa-folder-plus"></i> Buat Folder
+                </a>
 
-    <!-- Tombol Emoji atau Aksi Lainnya -->
-    <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
-</div>
+                <!-- Tombol Emoji atau Aksi Lainnya -->
+                <button class="emoji-btn" onclick="window.location.href='viewer.php';"><span>🚨</span></button>
+            </div>
         
             <!-- Tabel File -->
             <table class="file-manager-table">
@@ -160,11 +114,11 @@ function get_filetype_icon($filetype)
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($current_directory != $initial_directory): ?>
+                    <?php if ($current_directory != realpath($initial_directory) . DIRECTORY_SEPARATOR): ?>
                     <tr>
                         <td class="name">
-                            <i class="fa-solid fa-folder"></i>
-                            <a href="?dir=<?= urlencode(dirname(rtrim($current_directory, '/'))) ?>">..</a>
+                            <?= get_filetype_icon(dirname($current_directory)) ?>
+                            <a href="?dir=<?= urlencode(dirname(rtrim($current_directory, DIRECTORY_SEPARATOR))) ?>">..</a>
                         </td>
                         <td class="actions"></td>
                     </tr>
@@ -205,11 +159,11 @@ function get_filetype_icon($filetype)
                                 <i class="fa-solid fa-download fa-xs"></i>
                             </a>
                             <!-- Tombol Edit (Rename) -->
-                            <a href="rename.php?file=<?= urlencode($result) ?>" class="btn blue" title="Ubah Nama">
+                            <a href="rename.php?dir=<?= urlencode($current_directory) ?>&file=<?= urlencode($result) ?>" class="btn blue" title="Ubah Nama">
                                 <i class="fa-solid fa-pen-to-square fa-xs"></i>
                             </a>
                             <!-- Tombol Hapus -->
-                            <a href="delete.php?file=<?= urlencode($result) ?>&dir=<?= urlencode($current_directory) ?>"
+                            <a href="delete.php?dir=<?= urlencode($current_directory) ?>&file=<?= urlencode($result) ?>"
                                 class="btn red" title="Hapus"
                                 onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?');">
                                 <i class="fa-solid fa-trash fa-xs"></i>

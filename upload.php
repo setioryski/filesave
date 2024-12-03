@@ -1,75 +1,50 @@
 <?php
-if (isset($_POST['submit_password'])) {
-    $password = $_POST['password'];
-    $directory = $_POST['directory'];
-    
-    // Check if the password is correct
-    if ($password == "12345") {
-        header("Location: upload.php?directory=$directory"); // Redirect to the upload page if the password is correct
-    } else {
-        echo "Invalid password"; // Display an error message if the password is wrong
-    }
-    exit; // Stop script execution after the check
-}
-?>
+// upload.php
 
-<?php
-$initial_directory = 'uploads/';
+// Include the common configuration and functions
+include 'config.php';
 
-function handleUpload($initial_directory) {
-    $current_directory = $initial_directory;
+// Get the current directory
+$current_directory = get_current_directory($initial_directory);
 
-    // Determine the current directory
-    if (isset($_GET['directory'])) {
-        $current_directory = realpath($_GET['directory']);
-        if ($current_directory === false || strpos($current_directory, realpath($initial_directory)) !== 0) {
-            die("Error: Invalid directory path");
-        }
-    }
-
+// Handle file upload
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['files'])) {
     $response = array('success' => false, 'messages' => array());
+    $files = $_FILES['files'];
+    $total_files = count($files['name']);
 
-    // Handle file upload
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['files'])) {
-        $files = $_FILES['files'];
-        $total_files = count($files['name']);
+    for ($i = 0; $i < $total_files; $i++) {
+        $filename = basename($files['name'][$i]);
+        $targetFile = rtrim($current_directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
 
-        for ($i = 0; $i < $total_files; $i++) {
-            $filename = basename($files['name'][$i]);
-            $targetFile = rtrim($current_directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-
-            if (file_exists($targetFile)) {
-                $response['messages'][] = "Sorry, file $filename already exists.";
+        if (file_exists($targetFile)) {
+            $response['messages'][] = "Maaf, file $filename sudah ada.";
+        } else {
+            if (move_uploaded_file($files['tmp_name'][$i], $targetFile)) {
+                $response['messages'][] = "File $filename berhasil diunggah.";
             } else {
-                if (move_uploaded_file($files['tmp_name'][$i], $targetFile)) {
-                    $response['messages'][] = "The file $filename has been uploaded.";
-                } else {
-                    $response['messages'][] = "Sorry, there was an error uploading $filename.";
-                    $response['messages'][] = "Error code: " . $_FILES['files']['error'][$i];
-                }
+                $response['messages'][] = "Maaf, terjadi kesalahan saat mengunggah $filename.";
+                $response['messages'][] = "Kode error: " . $files['error'][$i];
             }
         }
-
-        $response['success'] = true;
-
-        header('Content-Type: application/json');
-        echo json_encode($response);
-        exit;
     }
 
-    return $current_directory;
+    $response['success'] = true;
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
 }
 
-$current_directory = handleUpload($initial_directory);
-$last_directory = basename($current_directory);
+// Determine the last directory name for display
+$last_directory = basename(rtrim($current_directory, DIRECTORY_SEPARATOR));
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload</title>
+    <title>Unggah File</title>
     <link href="styleupload.css" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
@@ -83,32 +58,65 @@ $last_directory = basename($current_directory);
             text-align: center;
             color: #cccccc;
             margin-top: 20px;
+            cursor: pointer;
         }
         .drop-zone.dragover {
             background-color: #f0f0f0;
             border-color: #333333;
             color: #333333;
         }
+        .hidden {
+            display: none;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            border-radius: 5px;
+        }
+        .upload-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #333;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 <div class="upload-container">
-    <h1>Upload Files to <?= htmlspecialchars($last_directory) ?></h1>
-    <form id="uploadForm" action="?directory=<?= urlencode($current_directory) ?>" method="post" enctype="multipart/form-data">
-        <label for="fileToUpload">Select files to upload:</label>
+    <h1>Unggah File ke <?= htmlspecialchars($last_directory) ?></h1>
+    <form id="uploadForm" action="upload.php?dir=<?= urlencode($current_directory) ?>" method="post" enctype="multipart/form-data">
+        <label for="fileToUpload">Pilih file untuk diunggah:</label>
         <input type="file" name="files[]" id="fileToUpload" multiple required>
         <div class="drop-zone" id="drop-zone">
             Drag & Drop Files Here
         </div>
-        <input type="submit" value="Upload Files" name="submit">
+        <input type="submit" value="Unggah File" name="submit">
     </form>
+    <div id="loading" class="hidden">Mengunggah...</div>
+    <div class="progress-bar-container hidden" id="progress-bar-container">
+        <div class="progress-bar" id="progress-bar">0%</div>
+    </div>
+    <div id="result" class="hidden"></div>
+    <a href="index.php?dir=<?= urlencode($current_directory) ?>" class="back-link">Kembali ke Pengelola File</a>
 </div>
-<div id="loading" class="hidden">Uploading...</div>
-<div class="progress-bar-container hidden" id="progress-bar-container">
-    <div class="progress-bar" id="progress-bar">0%</div>
-</div>
-<div id="result" class="hidden"></div>
-<a href="index.php?file=<?= urlencode($current_directory) ?>" class="back-link">Back to File Manager</a>
 
 <script>
     $(document).ready(function() {
@@ -144,6 +152,7 @@ $last_directory = basename($current_directory);
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         var response = JSON.parse(xhr.responseText);
+                        $('#result').removeClass('hidden').html('');
                         response.messages.forEach(function(message) {
                             if (response.success) {
                                 $('#result').css('color', 'green').append('<p>' + message + '</p>');
@@ -154,7 +163,6 @@ $last_directory = basename($current_directory);
 
                         if (response.success) {
                             $('#progress-bar-container').addClass('hidden');
-                            $('#result').removeClass('hidden');
                         }
                     } else {
                         console.error('Error: ' + xhr.statusText);
@@ -200,6 +208,11 @@ $last_directory = basename($current_directory);
             dropZone.removeClass('dragover');
             var files = e.originalEvent.dataTransfer.files;
             handleFiles(files);
+        });
+
+        // Optional: Click on drop zone to open file dialog
+        dropZone.on('click', function() {
+            $('#fileToUpload').click();
         });
     });
 </script>
